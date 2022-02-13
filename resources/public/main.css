@@ -1,0 +1,26 @@
+body {
+    font-family: "Helvetica", sans-serif;
+    color: #444;
+    margin: 20px;
+}
+
+.breadcrumb-chevron {
+    margin: 0px 4px;
+    opacity: 0.5;
+    font-size: 75%;
+}
+
+h1 {
+    font-size: 2em;
+    margin-bottom: 0.4em;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+}
+
+input {
+    margin-bottom: 20px;
+}
