@@ -39,3 +39,7 @@
                     :sessions
                     {:hash session-hash
                      :user_id user-id})))
+
+(defn remove-session-for-user
+  [user-id]
+  (j/delete! pg-db :sessions ["user_id = ?" user-id]))

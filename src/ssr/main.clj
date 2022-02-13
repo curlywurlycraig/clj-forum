@@ -36,6 +36,13 @@
                 (resp/set-cookie "session" (:hash session))))
     :get (html-result (html5 (login-page)))))
 
+(defn logout
+  [request]
+  (let [user-id (get-in request [:auth :user_id])]
+    (db/remove-session-for-user user-id)
+    (-> (resp/redirect "/")
+        (resp/set-cookie "session" "" {:max-age 0}))))
+
 (defn register
   [request]
   (case (:request-method request)
@@ -55,6 +62,7 @@
   (case (:uri request)
     "/register" (register request)
     "/login" (login request)
+    "/logout" (logout request)
     (-> (greeting-page request)
         html5
         html-result)))

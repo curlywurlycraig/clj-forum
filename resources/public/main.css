@@ -24,3 +24,12 @@ form {
 input {
     margin-bottom: 20px;
 }
+
+nav {
+    display: flex;
+    justify-content: space-between;
+}
+
+#content {
+    padding-top: 20px;
+}

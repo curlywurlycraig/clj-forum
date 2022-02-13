@@ -4,13 +4,14 @@
 (defn breadcrumbs
   [uri]
   (let [bits (rest (str/split uri #"/"))]
-    (map-indexed (fn [i b]
-                   (let [link [:a {:href (str "/" (str/join "/" (take (inc i) bits)))} b]
-                         chevron [:span.breadcrumb-chevron ">"]]
-                     (if (= i (dec (count bits)))
-                       link
-                       (list link chevron))))
-                 bits)))
+    [:div#breadcrumbs-container
+     (map-indexed (fn [i b]
+                    (let [link [:a {:href (str "/" (str/join "/" (take (inc i) bits)))} b]
+                          chevron [:span.breadcrumb-chevron ">"]]
+                      (if (= i (dec (count bits)))
+                        link
+                        (list link chevron))))
+                  bits)]))
 
 (defn page
   [contents]
@@ -21,23 +22,30 @@
    [:body
     contents]))
 
+(defn page-header
+  [user uri]
+  [:nav
+   (list
+    (breadcrumbs uri)
+    [:div#login-container
+     (if user
+       [:p (list
+            (:username user)
+            " ("
+            [:a {:href "/logout"} "log out"]
+            ")")]
+       (list
+        [:a {:href "/login"} "Login"]
+        " "
+        [:a {:href "/register"} "Register"]))])])
+
 (defn greeting-page
   [request]
   (let [auth-user (:auth request)]
     (page (list
-           [:nav
-            (list
-             (breadcrumbs (:uri request))
-             (if auth-user
-               [:p (str "Welcome " (:username auth-user))]
-               nil))]
-           [:h1 "Welcome to the web site."]
-           [:p (list
-                "You can "
-                [:a {:href "/register"} "register"]
-                " or "
-                [:a {:href "/login"} "log in"]
-                ".")]))))
+           (page-header auth-user (:uri request))
+           [:div#content
+            [:p "There are no posts."]]))))
 
 (defn register-success-page
   [name]
